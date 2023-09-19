@@ -20,11 +20,11 @@ for i in range(A.shape[0]):
 A_noisy = A + noise
 """
 
-get_ipython().magic('clear')
-get_ipython().magic('reset -f')
+
 
 def generate_tuning_curves(x_linspace, num_curves):
     
+    Jth = 0
     tuning_curves = []
     alphas = []
     J_biases = []
@@ -75,81 +75,78 @@ def get_RMSE(y_actual, y_predicted):
     rms = sqrt(mean_squared_error(y_actual, y_predicted))
     return rms
 
-# Fix the numpy random seed for reproducible results
+get_ipython().magic('clear')
+get_ipython().magic('reset -f')
+
 np.random.seed(18945)
 
-
-Jth = 0
-N = 41
-S = 16
-
-# B)
-
-x_linspace = np.linspace(-1, 1, N)
-
-tuning_curves = generate_tuning_curves(x_linspace, S)
-
-#C)
-
-A = np.matrix(tuning_curves)
-X = np.matrix(x_linspace)
-
-D = np.transpose(np.linalg.inv(A * np.transpose(A)) * A * np.transpose(X))
-
-
-#D)
-print("D)")
-X_hat = D*A
-
-plot_decoded_vs_ideal(x_linspace, X_hat, "No Noise")
-
-rmse = get_RMSE(np.asarray(X_hat)[0], x_linspace)
-print(rmse)
-print()
-
-#E)
-print("E)")
-ro = 0.2*np.amax(A)
-A_noisy = A + np.random.normal(0, ro, A.shape)
-
-
-X_hat_noisy = D * A_noisy
-
-plot_decoded_vs_ideal(x_linspace, X_hat_noisy, "Noise in A, No Regularization")
-rmse = get_RMSE(np.asarray(X_hat_noisy)[0], x_linspace)
-print(rmse)
-print()
-
-#F)
-print("F)")
-
-regularizer = N*pow(ro, 2) * np.eye(S, S)
-D_reg = np.transpose(np.linalg.inv(A * A.T + regularizer) * A * np.transpose(X))
-
-X_hat_reg = D_reg * A
-X_hat_noisy_reg = D_reg * A_noisy
-
-plot_decoded_vs_ideal(x_linspace, X_hat_reg, "No noise in A, Decoder Regularized")
-rmse = get_RMSE(np.asarray(X_hat_reg)[0], x_linspace)
-print(rmse)
-
-plot_decoded_vs_ideal(x_linspace, X_hat_noisy_reg, "Noise in A, Decoder Regularized")
-rmse = get_RMSE(np.asarray(X_hat_noisy_reg)[0], x_linspace)
-print(rmse)
-
-print()
-
-
-#G)
-print("G)")
-
-
-
-
-
-
-
-print()
+if __name__ == "__main__":
+    
+    
+    N = 16
+    S = 41
+    
+    # B)
+    
+    x_linspace = np.linspace(-1, 1, S)
+    
+    tuning_curves = generate_tuning_curves(x_linspace, N)
+    
+    #C)
+    
+    A = np.matrix(tuning_curves)
+    X = np.matrix(x_linspace)
+    
+    D = np.transpose(np.linalg.inv(A * np.transpose(A)) * A * np.transpose(X))
+    
+    
+    #D)
+    print("D)")
+    X_hat = D*A
+    
+    plot_decoded_vs_ideal(x_linspace, X_hat, "No Noise")
+    
+    rmse = get_RMSE(np.asarray(X_hat)[0], x_linspace)
+    print(rmse)
+    print()
+    
+    #E)
+    print("E)")
+    ro = 0.2*np.amax(A)
+    A_noisy = A + np.random.normal(0, ro, A.shape)
+    
+    
+    X_hat_noisy = D * A_noisy
+    
+    plot_decoded_vs_ideal(x_linspace, X_hat_noisy, "Noise in A, No Regularization")
+    rmse = get_RMSE(np.asarray(X_hat_noisy)[0], x_linspace)
+    print(rmse)
+    print()
+    
+    #F)
+    print("F)")
+    
+    regularizer = S*pow(ro, 2) * np.eye(N, N)
+    D_reg = np.transpose(np.linalg.inv(A * A.T + regularizer) * A * np.transpose(X))
+    
+    X_hat_reg = D_reg * A
+    X_hat_noisy_reg = D_reg * A_noisy
+    
+    plot_decoded_vs_ideal(x_linspace, X_hat_reg, "No noise in A, Decoder Regularized")
+    rmse = get_RMSE(np.asarray(X_hat_reg)[0], x_linspace)
+    print(rmse)
+    
+    plot_decoded_vs_ideal(x_linspace, X_hat_noisy_reg, "Noise in A, Decoder Regularized")
+    rmse = get_RMSE(np.asarray(X_hat_noisy_reg)[0], x_linspace)
+    print(rmse)
+    
+    print()
+    
+    
+    #G)
+    print("G)")
+    
+    print()
 
 
 
