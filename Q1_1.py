@@ -144,7 +144,7 @@ if __name__ == "__main__":
     print("RMSE Noisy Tuning Curves No Regularization: ", rmse_noisy_curves_no_reg)
     print()
     
-    #F)
+    #F) [DONE]
     print("F)")
     
     regularizer = N*pow(ro, 2) * np.eye(N, N)
@@ -164,7 +164,7 @@ if __name__ == "__main__":
     print()
     
     
-    #G)
+    #G) [DONE]
     print("G)")
     
     RMSE_matrix = [[rmse_no_noise_no_reg, rmse_noisy_curves_no_reg],

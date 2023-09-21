@@ -78,18 +78,22 @@ def neurons_vs_error(Q_number, ro_scalar):
     plt.show()
     """
     
-# 1.2 A)
+# 1.2 A) [DONE]
 print("1.2A)")
 neurons_vs_error("1.2A) ", 0.1)
 
-# 1.2B)
+# 1.2B) [DONE]
 print("1.2B)")
 neurons_vs_error("1.2B) ", 0.01)
 
-# 1.2C)
+# 1.2C) [DONE]
 """
 
 From the plot, we can see that distortion is a far greater source of error than noise.
+We can also see that error due to distortion and noise both decrease roughly
+in proprortion to 1/n, where n is the number of neurons.
+
+Interestingly, we also see that distortion error changes with noise, not just noise error.
 
 """
 
