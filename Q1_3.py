@@ -10,8 +10,8 @@ from math import sqrt
 get_ipython().magic('clear')
 get_ipython().magic('reset -f')
 
-Tref = 2
-Trc = 20
+Tref = 2 / 1000
+Trc = 20 / 1000
 
 def G_LIF(alpha, x, encoder, J_bias):
     
@@ -25,7 +25,7 @@ def G_LIF(alpha, x, encoder, J_bias):
     return G
     
 def get_alpha(zeta, a_max):
-    exponent = -1/Trc * (1 - 1 / a_max)
+    exponent = -1/Trc * (Tref - 1 / a_max)
     numerator = pow(1 - exp(exponent), -1)
     alpha = (numerator - 1) / (1 - zeta)
     
@@ -42,7 +42,7 @@ def generate_LIF_tuning_curves(x_linspace, num_curves):
     for i in range(num_curves):
         
         a_max = np.random.uniform(100, 200)
-        zeta = round(np.random.uniform(-0.95, 0.95), 2)
+        zeta = np.random.uniform(-0.95, 0.95)
         encoder = np.random.choice(np.array([-1, 1]))
 
         alpha = get_alpha(zeta, a_max)
@@ -107,7 +107,7 @@ if __name__ == "__main__":
     print("RMSE with noise without regularization: ", rmse_with_noise_no_reg)
     
     #D regularized
-    regularizer = S*pow(ro, 2) * np.eye(N, N)
+    regularizer = N*pow(ro, 2) * np.eye(N, N)
     D_reg = np.transpose(np.linalg.inv(A * A.T + regularizer) * A * np.transpose(X))
     
     X_hat_reg = D_reg * A # No noise in A
